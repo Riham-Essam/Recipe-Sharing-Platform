@@ -13,5 +13,13 @@ namespace Recipe_Sharing_Platform.Models
         {
 
         }
+
+        DbSet<Comment> Comments { get; set; }
+        DbSet<Recipe> Recipes { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
     }
 }
