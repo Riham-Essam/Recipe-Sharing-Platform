@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Recipe_Sharing_Platform.Models;
+using Recipe_Sharing_Platform.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +23,66 @@ namespace Recipe_Sharing_Platform.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
 
-       // [HttpGet]
+                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RemeberMe, false);
 
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Invalid login Attempt");
+                }
+            }
+
+            return View(model);
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    Gender = model.Gender
+                };
+
+                var result = await userManager.CreateAsync(user, model.Password);
+
+                if (!result.Succeeded)
+                {
+                    foreach(var errors in result.Errors)
+                    {
+                        ModelState.AddModelError("", errors.Description);
+                    }
+                }
+            }
+
+            return View(model);
+        }
     }
 }
