@@ -15,10 +15,14 @@ namespace Recipe_Sharing_Platform.Models
         public string Title { get; set; }
         [Required]
         public string Description { get; set; }
-        public string Photo { get; set; }
+        public string Photo{ get; set; }
         [Required]
         public string Ingredients { get; set; }
         public string Steps { get; set; }
+
+        public List<Comment> Comments { get; set; }
+        public List<ApplicationUser> Users { get; set; }
+
 
     }
 }

@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Recipe_Sharing_Platform.Models
 {
-    public class AppDbContext : IdentityDbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
-        public AppDbContext(DbContextOptions options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
         }
 
-        DbSet<Comment> Comments { get; set; }
-        DbSet<Recipe> Recipes { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Recipe> Recipes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
