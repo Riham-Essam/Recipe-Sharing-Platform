@@ -43,6 +43,8 @@ namespace Recipe_Sharing_Platform.Controllers
                 {
                     ModelState.AddModelError("", "Invalid login Attempt");
                 }
+
+                return RedirectToAction("Index", "Home");
             }
 
             return View(model);
@@ -67,6 +69,7 @@ namespace Recipe_Sharing_Platform.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
+                    UserName = model.Email,
                     PhoneNumber = model.PhoneNumber,
                     Gender = model.Gender
                 };
