@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Recipe_Sharing_Platform.Models;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace Recipe_Sharing_Platform.Controllers
             this.recipeRepository = recipeRepository;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             IEnumerable<Recipe> recipe = recipeRepository.GetAllRecipes();
