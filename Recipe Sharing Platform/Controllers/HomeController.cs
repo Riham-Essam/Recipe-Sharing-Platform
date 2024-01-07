@@ -17,12 +17,20 @@ namespace Recipe_Sharing_Platform.Controllers
             this.recipeRepository = recipeRepository;
         }
 
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult Index()
         {
             IEnumerable<Recipe> recipe = recipeRepository.GetAllRecipes();
 
             return View(recipe);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AddRecipe()
+        {
+            return View();
         }
 
     }
