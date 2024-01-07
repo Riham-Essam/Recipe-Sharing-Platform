@@ -31,20 +31,28 @@ namespace Recipe_Sharing_Platform.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
-
                 var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RemeberMe, false);
 
                 if (!result.Succeeded)
                 {
-                    ModelState.AddModelError("", "Invalid login Attempt");
+                    ModelState.AddModelError("", "Invalid Login Attempt");
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
 
-                return RedirectToAction("Index", "Home");
             }
 
             return View(model);
@@ -78,14 +86,30 @@ namespace Recipe_Sharing_Platform.Controllers
 
                 if (!result.Succeeded)
                 {
-                    foreach(var errors in result.Errors)
+                    foreach (var errors in result.Errors)
                     {
                         ModelState.AddModelError("", errors.Description);
                     }
                 }
+                else
+                {
+
+                    await signInManager.SignInAsync(user, isPersistent: false);
+
+                    return RedirectToAction("Index", "Home");
+
+                }
             }
 
             return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
