@@ -4,33 +4,44 @@
 	ViewBag.Title = "Recipes";
 }
 
+<style>
+	.card-img-top {
+		object-fit: contain;
+		max-height: 200px; /* Set a maximum height for the images */
+	}
+</style>
 
-@if (Model.Any())
-{
-<div class="row row-cols-1 row-cols-md-3 g-4">
-
-	@foreach (var recipe in Model)
+<div class="container">
+	@if (Model.Any())
 	{
+		<div class="row row-cols-1 row-cols-md-3 g-4">
+			@foreach (var recipe in Model)
+			{
+				var photoPath = "~/images/" + (recipe.Photo ?? "recipe.png");
 
-		<div class="card">
-			<div class="card-header">
-				@recipe.Title
-			</div>
+				<div class="col mb-4">
+					<div class="card">
 
-			<div class="card-body">
-				<h3 >hello</h3>
-			</div>
+						<div class="card-header">
+							<h5 class="card-title text-center">@recipe.Title</h5>
+						</div>
 
-			<div class="card-footer">
-				<a asp-action="Details" asp-controller="Home" class="btn btn-primary">View</a>
-			</div>
+						<div class="card-body">
+							<img src="@photoPath" asp-append-version="true" class="card-img-top img-fluid" alt="Recipe Image" />
+						</div>
 
+						<div class="card-footer text-center">
+							<a asp-action="Details" asp-controller="Home" class="btn btn-primary">View</a>
+							<a asp-action="EditRecipe" asp-controller="Home" class="btn btn-warning">Edit</a>
+							<a asp-action="DeleteRecipe" asp-controller="Home" class="btn btn-danger">Delete</a>
+						</div>
+					</div>
+				</div>
+			}
 		</div>
 	}
-
+	else
+	{
+		<h3 class="text-center">No recipes are available right now</h3>
+	}
 </div>
-}
-else
-{
-	<h3>No Recipes're available right now</h3>
-}
