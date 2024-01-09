@@ -111,5 +111,25 @@ namespace Recipe_Sharing_Platform.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            // Get the currently signed-in user
+            var user = await userManager.GetUserAsync(User);
+
+            // Create a ProfileViewModel and populate it with user information
+            var profileViewModel = new ProfileViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender.ToString() // Use the null conditional operator to avoid NullReferenceException
+            };
+
+            return View(profileViewModel);
+        }
+
     }
 }
