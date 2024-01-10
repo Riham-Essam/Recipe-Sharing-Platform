@@ -33,6 +33,12 @@ namespace Recipe_Sharing_Platform.ViewModels
         public string Password { get; set; }
 
         [Required]
+        [Display(Name = "Confirm Password")]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Confirmation Passowrd and Password don't match")]
+        public string ConfirmPassword { get; set; }
+
+        [Required]
         public Gender Gender { get; set; }
 
     }
