@@ -67,8 +67,13 @@
 	</div>
 
 
-	<div class="mt-3">
+	<div class="container mt-3">
 		@RenderBody()
 	</div>
+
+	@if (IsSectionDefined("Scripts"))
+	{
+		@RenderSection("Scripts",required:true)
+	}
 </body>
 </html>
