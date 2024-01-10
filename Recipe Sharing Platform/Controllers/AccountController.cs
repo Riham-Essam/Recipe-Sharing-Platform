@@ -131,5 +131,70 @@ namespace Recipe_Sharing_Platform.Controllers
             return View(profileViewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GeneralInfo()
+        {
+            var user = await userManager.GetUserAsync(User);
+
+            GeneralInfoViewModel model = new GeneralInfoViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender
+            };
+
+            return View(model);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GeneralInfo(GeneralInfoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.GetUserAsync(User);
+
+                
+                user.PhoneNumber = model.PhoneNumber;
+                user.UserName = model.Email;
+                user.Email = model.Email;
+           
+               
+
+                //// Fetch the existing user from the UserManager
+                //var existingUser = await userManager.FindByIdAsync(user.Id);
+
+                //// Update the user's security stamp
+                //user.SecurityStamp = existingUser.SecurityStamp;
+
+                var result = await userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    if (model.NewPassword != null)
+                    {
+                        result = await userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+                        if (result.Succeeded)
+                        {
+                            return View("DataIsChanged");
+                        }
+                    }
+
+                    return View("DataIsChanged");
+
+                }
+
+                foreach (var erros in result.Errors)
+                {
+                    ModelState.AddModelError("", erros.Description);
+                }
+
+            }
+            return View(model);
+        }
+
     }
 }
