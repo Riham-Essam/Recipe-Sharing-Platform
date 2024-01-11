@@ -9,6 +9,11 @@ namespace Recipe_Sharing_Platform.Models
 {
     public class Recipe
     {
+        public Recipe()
+        {
+            Comments = new List<Comment>();
+        }
+
         [Required]
         public string RecipeId { get; set; }
         [Required]
@@ -21,8 +26,6 @@ namespace Recipe_Sharing_Platform.Models
         public string Steps { get; set; }
 
         public List<Comment> Comments { get; set; }
-        public List<ApplicationUser> Users { get; set; }
-
-
+        
     }
 }
