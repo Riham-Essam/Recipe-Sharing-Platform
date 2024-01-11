@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Recipe_Sharing_Platform.Models
 {
@@ -25,7 +24,7 @@ namespace Recipe_Sharing_Platform.Models
         public Recipe DeleteRecipe(int id)
         {
             var recipe = context.Recipes.Find(id);
-            if(recipe != null)
+            if (recipe != null)
             {
                 context.Remove(recipe);
                 context.SaveChanges();
@@ -39,9 +38,13 @@ namespace Recipe_Sharing_Platform.Models
             return context.Recipes;
         }
 
-        public Recipe GetRecipe(int id)
+        public Recipe GetRecipe(string id)
         {
-            return context.Recipes.Find(id);
+            return context.Recipes
+                                 .Where(a => a.RecipeId == id)
+                                 .Include(a => a.Comments)
+                                 .FirstOrDefault();
+
         }
 
         public Recipe UpdateRecipe(Recipe recipe)
