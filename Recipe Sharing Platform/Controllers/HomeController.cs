@@ -17,11 +17,14 @@ namespace Recipe_Sharing_Platform.Controllers
         private readonly IRecipeRepository recipeRepository;
 
         public IHostingEnvironment HostingEnv;
+        private readonly AppDbContext context;
 
-        public HomeController(IRecipeRepository recipeRepository, IHostingEnvironment hostingEnv)
+        public HomeController(IRecipeRepository recipeRepository, IHostingEnvironment hostingEnv,
+                               AppDbContext context)
         {
             this.recipeRepository = recipeRepository;
             HostingEnv = hostingEnv;
+            this.context = context;
         }
 
         [HttpGet]
@@ -82,6 +85,31 @@ namespace Recipe_Sharing_Platform.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Details(string recipeId)
+        {
+            var recipe = recipeRepository.GetRecipe(recipeId);
+
+            return View(recipe);
+        }
+
+        [HttpPost]
+        public IActionResult AddComment(string userEmail, string commentContent, string recipeId)
+        {
+            var comm = new Comment
+            {
+                RecipeId = recipeId,
+                UserEmail = userEmail,
+                Content = commentContent
+            };
+
+            context.Comments.Add(comm);
+
+            context.SaveChanges();
+
+            return RedirectToAction("Details", new { recipeId });
         }
 
 
