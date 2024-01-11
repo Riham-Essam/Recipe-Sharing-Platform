@@ -31,7 +31,7 @@
 					</div>
 
 					<div class="card-footer text-center">
-						<a asp-action="Details" asp-controller="Home" class="btn btn-primary">View</a>
+						<a asp-action="Details" asp-controller="Home" asp-route-recipeId ="@recipe.RecipeId" class="btn btn-primary">View</a>
 						<a asp-action="EditRecipe" asp-controller="Home" class="btn btn-warning">Edit</a>
 						<a asp-action="DeleteRecipe" asp-controller="Home" class="btn btn-danger">Delete</a>
 					</div>
