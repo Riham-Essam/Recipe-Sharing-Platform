@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Recipe_Sharing_Platform.Models;
 
 namespace Recipe_Sharing_Platform.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240110203619_UpdateCommentsTable")]
+    partial class UpdateCommentsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,6 +172,8 @@ namespace Recipe_Sharing_Platform.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<string>("RecipeId");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
@@ -186,6 +190,8 @@ namespace Recipe_Sharing_Platform.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -274,6 +280,13 @@ namespace Recipe_Sharing_Platform.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Recipe_Sharing_Platform.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("Recipe_Sharing_Platform.Models.Recipe")
+                        .WithMany("Users")
+                        .HasForeignKey("RecipeId");
                 });
 
             modelBuilder.Entity("Recipe_Sharing_Platform.Models.Comment", b =>
