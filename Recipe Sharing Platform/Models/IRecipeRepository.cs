@@ -8,7 +8,7 @@ namespace Recipe_Sharing_Platform.Models
     public interface IRecipeRepository
     {
         IEnumerable<Recipe> GetAllRecipes();
-        Recipe GetRecipe(int id);
+        Recipe GetRecipe(string id);
         Recipe AddRecipe(Recipe recipe);
         Recipe UpdateRecipe(Recipe recipe);
         Recipe DeleteRecipe(int id);
