@@ -8,12 +8,10 @@ namespace Recipe_Sharing_Platform.Models
 {
     public class Comment
     {
-        [Required]
         public string CommentId { get; set; }
-        [Required]
         public string Content { get; set; }
         public string RecipeId { get; set; }
-        public string UserId { get; set; }
+        public string UserEmail { get; set; }
 
     }
 }
